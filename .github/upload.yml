@@ -1,0 +1,41 @@
+name: "Deploy the Frontend"
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Download changes"
+        uses: actions/checkout@v4
+
+      - name: "Copy files to VPS via ssh key"
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "."
+          target: "/client"
+      
+      - name: "Install bun"
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      
+      - name: "Build the Frontend via ssh key"
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /client
+            bun install
+            bun run build
+            pm2 start pm2.config.json
+            pm2 save
