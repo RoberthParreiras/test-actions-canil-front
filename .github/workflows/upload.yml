@@ -21,11 +21,6 @@ jobs:
           source: "."
           target: "/client"
 
-      - name: "Install bun"
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
       - name: "Build the Frontend via ssh key"
         uses: appleboy/ssh-action@v1.1.0
         with:
