@@ -6,7 +6,7 @@ export default async function FetchMessage() {
   const message: { msg: string } = { msg: "" };
   return (
     <div className="text-2xl">
-      {message ? <p>{message.msg}</p> : <p>Deu tudo errado!</p>}
+      {message.msg !== "" ? <p>{message.msg}</p> : <p>Deu tudo errado!</p>}
     </div>
   );
 }
