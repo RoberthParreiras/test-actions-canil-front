@@ -2,7 +2,6 @@ export default async function FetchMessage() {
   try {
     const res = await fetch("http://127.0.0.1:5000", {
       cache: "no-store",
-      next: { revalidate: 1 },
     });
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
